@@ -52,13 +52,14 @@ class Wallet extends EventTargetImpl {
 	// TODO - integrate with Kaspacore-lib
 	static networkTypes: Object = {
 		kaspa: { port: 16110, network: 'kaspa', name : 'mainnet' },
+		karlsen: { port: 42110, network: 'karlsen', name : 'mainnet' },
 		kaspatest: { port: 16210, network: 'kaspatest', name : 'testnet' },
 		kaspasim: {	port: 16510, network: 'kaspasim', name : 'simnet' },
 		kaspadev: {	port: 16610, network: 'kaspadev', name : 'devnet' }
 	}
 
 	static networkAliases: Object = {
-		mainnet: 'kaspa',
+		mainnet: 'karlsen',
 		testnet: 'kaspatest',
 		devnet: 'kaspadev',
 		simnet: 'kaspasim'
@@ -124,7 +125,7 @@ class Wallet extends EventTargetImpl {
 	/**
 	 * Current network.
 	 */
-	network: Network = 'kaspa';
+	network: Network = 'karlsen';
 
 	api: KaspaAPI; //new KaspaAPI();
 
@@ -915,7 +916,7 @@ class Wallet extends EventTargetImpl {
 		this.logger.verbose(`tx ... available: ${KAS(amountAvailable)} in ${data.utxos.length} UTXOs`)
 
 		if(networkFeeMax && dataFee > networkFeeMax) {
-			throw new Error(`Fee max is ${networkFeeMax} but the minimum fee required for this transaction is ${KAS(dataFee)} KAS`);
+			throw new Error(`Fee max is ${networkFeeMax} but the minimum fee required for this transaction is ${KAS(dataFee)} KLS`);
 		}
 
 		if(calculateNetworkFee){
@@ -939,10 +940,10 @@ class Wallet extends EventTargetImpl {
 			} while((!networkFeeMax || txParams.fee <= networkFeeMax) && txParams.fee < dataFee+priorityFee);
 
 			if(networkFeeMax && txParams.fee > networkFeeMax)
-				throw new Error(`Maximum network fee exceeded; need: ${KAS(dataFee)} KAS maximum is: ${KAS(networkFeeMax)} KAS`);
+				throw new Error(`Maximum network fee exceeded; need: ${KAS(dataFee)} KLS maximum is: ${KAS(networkFeeMax)} KLS`);
 
 		}else if(dataFee > priorityFee){
-			throw new Error(`Minimum fee required for this transaction is ${KAS(dataFee)} KAS`);
+			throw new Error(`Minimum fee required for this transaction is ${KAS(dataFee)} KLS`);
 		}else if(inclusiveFee){
 			txParams.amount -= txParams.fee;
 			data = this.composeTx(txParams);
