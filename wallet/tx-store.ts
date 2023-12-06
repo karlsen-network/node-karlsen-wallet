@@ -2,7 +2,7 @@ import {Wallet} from './wallet';
 import {iDB} from './indexed-db';
 import {Api} from 'custom-types';
 
-const API_BASE = "https://api.kaspa.org/";
+const API_BASE = "https://api.karlsencoin.com/";
 
 interface APITx{
 	block_time:number,
@@ -26,7 +26,8 @@ export interface TXStoreItem{
 
 export const internalNames = {
 	mainnet : "default",
-	kaspa: "default",
+	karlsen: "default",
+	//kaspa: "default",
 	testnet : "testnet",
 	kaspatest: "testnet",
 	kaspasim: "simnet",
