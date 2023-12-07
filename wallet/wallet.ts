@@ -32,7 +32,7 @@ const COMPOUND_UTXO_MAX_COUNT = 500;
 const SompiPerKarlsen = 100_000_000
 
 // MaxSompi is the maximum transaction amount allowed in sompi.
-const MaxSompi = 21_000_000 * SompiPerKarlsen
+const MaxSompi = 4_961_000_000 * SompiPerKarlsen
 
 export {karlsencore, COMPOUND_UTXO_MAX_COUNT, CONFIRMATION_COUNT, COINBASE_CFM_COUNT};
 
