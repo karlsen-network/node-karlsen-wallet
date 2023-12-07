@@ -1,24 +1,24 @@
 // @ts-ignore
-import * as kaspacore from '@kaspa/core-lib';
+import * as karlsencore from '@karlsen/core-lib';
 import {Network} from 'custom-types';
 
 // @ts-ignore
-const secp256k1 = kaspacore.secp256k1;//require('secp256k1-wasm');
+const secp256k1 = karlsencore.secp256k1;//require('secp256k1-wasm');
 import {EventTargetImpl} from './event-target-impl';
 import {dpc} from '../utils/helper';
 
 export class AddressManager extends EventTargetImpl {
-	constructor(HDWallet: kaspacore.HDPrivateKey, network: Network) {
+	constructor(HDWallet: karlsencore.HDPrivateKey, network: Network) {
 		super();
 		this.HDWallet = HDWallet;
 		this.network = network;
 	}
 
-	private HDWallet: kaspacore.HDPrivateKey;
+	private HDWallet: karlsencore.HDPrivateKey;
 
 	network: Network;
 
-	get all(): Record < string, kaspacore.PrivateKey > {
+	get all(): Record < string, karlsencore.PrivateKey > {
 		return {
 			...this.receiveAddress.keypairs,
 			...this.changeAddress.keypairs
@@ -44,9 +44,9 @@ export class AddressManager extends EventTargetImpl {
 		counter: number;
 		current: {
 			address: string;
-			privateKey: kaspacore.PrivateKey
+			privateKey: karlsencore.PrivateKey
 		};
-		keypairs: Record < string, kaspacore.PrivateKey > ;
+		keypairs: Record < string, karlsencore.PrivateKey > ;
 		atIndex: Record < string, string > ;
 		next: () => string;
 		advance: (n: number) => void;
@@ -85,9 +85,9 @@ export class AddressManager extends EventTargetImpl {
 		counter: number;
 		current: {
 			address: string;
-			privateKey: kaspacore.PrivateKey
+			privateKey: karlsencore.PrivateKey
 		};
-		keypairs: Record < string, kaspacore.PrivateKey > ;
+		keypairs: Record < string, karlsencore.PrivateKey > ;
 		atIndex: Record < string, string > ;
 		next: () => string;
 		advance: (n: number) => void;
@@ -129,7 +129,7 @@ export class AddressManager extends EventTargetImpl {
 		index: number
 	): {
 		address: string;
-		privateKey: kaspacore.PrivateKey
+		privateKey: karlsencore.PrivateKey
 	} {
 		//let ts0 = Date.now();
 		const dType = deriveType === 'receive' ? 0 : 1;
@@ -140,14 +140,14 @@ export class AddressManager extends EventTargetImpl {
 		//let ts2 = Date.now();
 
 		//console.log('durations:',(ts2-ts1)/1000,(ts1-ts0)/1000);
-		//let address1 = new kaspacore.PublicKey(publicKeys.pubkey, {network:this.network}).toAddress().toString();
+		//let address1 = new karlsencore.PublicKey(publicKeys.pubkey, {network:this.network}).toAddress().toString();
 		//let address = privateKey.toAddress(this.network).toString();
 		//let pubkey = Buffer.from(publicKeys.pubkey, "hex");
 		//let {address:address3} = bitcoin.payments.p2pkh({pubkey});
 		let xonly = Buffer.from(xonlyPubKey, "hex");
 		//@ts-ignore
 		
-		let address = kaspacore.Address.fromPublicKeyBuffer(xonly, this.network).toString();
+		let address = karlsencore.Address.fromPublicKeyBuffer(xonly, this.network).toString();
 
 		/*
 		console.log("privateKey:xxxx:", {

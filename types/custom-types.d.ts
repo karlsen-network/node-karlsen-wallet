@@ -1,12 +1,12 @@
-import kaspacore from '@kaspa/core-lib';
-import { KaspaAPI } from 'wallet/apiHelpers';
+import karlsencore from '@karlsen/core-lib';
+import { KarlsenAPI } from 'wallet/apiHelpers';
 
-export type Network = 'karlsen' | 'kaspadev' | 'kaspareg' | 'kaspatest' | 'kaspasim';
+export type Network = 'karlsen' | 'karlsendev' | 'karlsenreg' | 'karlsentest' | 'karlsensim';
 export type bytes = string;//base84 string
 
 export * from './rpc';
 import {IRPC, RPC} from './rpc';
-import { KaspaAPI } from './apiHelpers';
+import { KarlsenAPI } from './apiHelpers';
 
 
 export interface ScaneMoreResultItem{
@@ -81,7 +81,7 @@ export interface TxSend {
   toAddr: string;
   amount: number;
   fee: number;
-  //tx?: kaspacore.Transaction;
+  //tx?: karlsencore.Transaction;
   changeAddrOverride? : string;
   networkFeeMax?:number;
   note?:string;
@@ -107,7 +107,7 @@ export interface TxResp {
 }
 
 export interface ComposeTxInfo{
-  tx: kaspacore.Transaction;
+  tx: karlsencore.Transaction;
   id: string;
   rawTx: string;
   utxoIds: string[];

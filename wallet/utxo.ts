@@ -1,7 +1,7 @@
 import {Api,RPC} from 'custom-types';
 import {UnspentOutput} from './unspent-output';
 // @ts-ignore
-import * as kaspacore from '@kaspa/core-lib';
+import * as karlsencore from '@karlsen/core-lib';
 import * as crypto from 'crypto';
 import * as helper from '../utils/helper';
 // import * as api from './apiHelpers';
@@ -44,7 +44,7 @@ export class UtxoSet extends EventTargetImpl {
 
 	/**
 	 * Add UTXOs to UTXO set.
-	 * @param utxos Array of UTXOs from kaspa API.
+	 * @param utxos Array of UTXOs from karlsen API.
 	 * @param address Address of UTXO owner.
 	 */
 	add(utxos: Api.Utxo[], address: string): string[] {

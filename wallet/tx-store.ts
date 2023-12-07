@@ -27,12 +27,11 @@ export interface TXStoreItem{
 export const internalNames = {
 	mainnet : "default",
 	karlsen: "default",
-	//kaspa: "default",
 	testnet : "testnet",
-	kaspatest: "testnet",
-	kaspasim: "simnet",
-	kaspadev: "devnet",
-  kaspareg: "kaspareg"
+	karlsentest: "testnet",
+	karlsensim: "simnet",
+	karlsendev: "devnet",
+  karlsenreg: "karlsenreg"
 }
 
 export class TXStore{
@@ -50,7 +49,7 @@ export class TXStore{
 		let sNetwork:string = internalNames[network]||network;
 		//this.restore();
 		if(typeof indexedDB != "undefined")
-			this.idb = new iDB({storeName:"tx", dbName:"kaspa_"+uid+"_"+sNetwork});
+			this.idb = new iDB({storeName:"tx", dbName:"karlsen_"+uid+"_"+sNetwork});
 	}
 
 	add(tx:TXStoreItem, skipSave=false){
