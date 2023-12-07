@@ -32,7 +32,7 @@ const missingRPCProviderError = ()=>{
 		Wallet.setRPC(rpc_provider).`);
 }
 
-class uKarlsenAPI extends EventTargetImpl{
+class KarlsenAPI extends EventTargetImpl{
 
 	rpc?:IRPC;
 	isConnected:boolean = false;
