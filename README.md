@@ -178,7 +178,7 @@ export interface TxSend {
 ```
 
 * `toAddr` - Destination address
-* `amount` - Amount of KAS in base units (sompis)
+* `amount` - Amount of KLS in base units (sompis)
 * `fee` - Transaction priority fee
 * `changeAddrOverride` - (optional) Allows you to supply your own address
   for the change transaction
