@@ -1,13 +1,13 @@
 import {Api,RPC} from 'custom-types';
 import {UnspentOutput} from './unspent-output';
 // @ts-ignore
-import * as kaspacore from '@kaspa/core-lib';
+import * as karlsencore from '@karlsen/core-lib';
 import * as crypto from 'crypto';
 import * as helper from '../utils/helper';
 // import * as api from './apiHelpers';
 import {Wallet} from './wallet';
 import {EventTargetImpl} from './event-target-impl';
-const KAS = helper.KAS;
+const KLS = helper.KLS;
 export {UnspentOutput};
 export const CONFIRMATION_COUNT = 10;
 export const COINBASE_CFM_COUNT = 100;
@@ -44,7 +44,7 @@ export class UtxoSet extends EventTargetImpl {
 
 	/**
 	 * Add UTXOs to UTXO set.
-	 * @param utxos Array of UTXOs from kaspa API.
+	 * @param utxos Array of UTXOs from karlsen API.
 	 * @param address Address of UTXO owner.
 	 */
 	add(utxos: Api.Utxo[], address: string): string[] {
@@ -233,7 +233,7 @@ export class UtxoSet extends EventTargetImpl {
 			if (totalVal >= txAmount) break;
 		}
 		if (totalVal < txAmount)
-			throw new Error(`Insufficient balance - need: ${KAS(txAmount)} KLS, available: ${KAS(totalVal)} KLS`);
+			throw new Error(`Insufficient balance - need: ${KLS(txAmount)} KLS, available: ${KLS(totalVal)} KLS`);
 
 		return {
 			utxoIds,

@@ -1,11 +1,11 @@
 const Mnemonic = require('bitcore-mnemonic');
-import * as kaspacore from '@kaspa/core-lib';
+import * as karlsencore from '@karlsen/core-lib';
 import * as helper from '../utils/helper';
 import {Storage, StorageType} from './storage';
 export * from './storage';
 export * from './error';
 import {Crypto} from './crypto';
-const KAS = helper.KAS;
+const KLS = helper.KLS;
 
 import {
 	Network, NetworkOptions, SelectedNetwork, WalletSave, Api, TxSend, TxResp,
@@ -19,7 +19,7 @@ import {AddressManager} from './address-manager';
 import {UnspentOutput, UtxoSet, CONFIRMATION_COUNT, COINBASE_CFM_COUNT} from './utxo';
 import {TXStore} from './tx-store';
 import {CacheStore} from './cache-store';
-import {KaspaAPI, ApiError} from './api';
+import {KarlsenAPI, ApiError} from './api';
 import {DEFAULT_FEE,DEFAULT_NETWORK} from '../config.json';
 import {EventTargetImpl} from './event-target-impl';
 
@@ -29,12 +29,12 @@ const BALANCE_PENDING = Symbol();
 const BALANCE_TOTAL = Symbol();
 const COMPOUND_UTXO_MAX_COUNT = 500;
 
-const SompiPerKaspa = 100_000_000
+const SompiPerKarlsen = 100_000_000
 
 // MaxSompi is the maximum transaction amount allowed in sompi.
-const MaxSompi = 21_000_000 * SompiPerKaspa
+const MaxSompi = 4_961_000_000 * SompiPerKarlsen
 
-export {kaspacore, COMPOUND_UTXO_MAX_COUNT, CONFIRMATION_COUNT, COINBASE_CFM_COUNT};
+export {karlsencore, COMPOUND_UTXO_MAX_COUNT, CONFIRMATION_COUNT, COINBASE_CFM_COUNT};
 
 /** Class representing an HDWallet with derivable child addresses */
 class Wallet extends EventTargetImpl {
@@ -42,37 +42,36 @@ class Wallet extends EventTargetImpl {
 	static Mnemonic: typeof Mnemonic = Mnemonic;
 	static passwordHandler = Crypto;
 	static Crypto = Crypto;
-	static kaspacore=kaspacore;
+	static karlsencore=karlsencore;
 	static COMPOUND_UTXO_MAX_COUNT=COMPOUND_UTXO_MAX_COUNT;
 	static MaxMassAcceptedByBlock = 100000;
 	static MaxMassUTXOs = 100000;
 	//Wallet.MaxMassAcceptedByBlock -
-	//kaspacore.Transaction.EstimatedStandaloneMassWithoutInputs;
+	//karlsencore.Transaction.EstimatedStandaloneMassWithoutInputs;
 
-	// TODO - integrate with Kaspacore-lib
+	// TODO - integrate with Karlsencore-lib
 	static networkTypes: Object = {
-		kaspa: { port: 16110, network: 'kaspa', name : 'mainnet' },
 		karlsen: { port: 42110, network: 'karlsen', name : 'mainnet' },
-		kaspatest: { port: 16210, network: 'kaspatest', name : 'testnet' },
-		kaspasim: {	port: 16510, network: 'kaspasim', name : 'simnet' },
-		kaspadev: {	port: 16610, network: 'kaspadev', name : 'devnet' }
+		karlsentest: { port: 42210, network: 'karlsentest', name : 'testnet' },
+		karlsensim: { port: 42510, network: 'karlsensim', name : 'simnet' },
+		karlsendev: { port: 42610, network: 'karlsendev', name : 'devnet' }
 	}
 
 	static networkAliases: Object = {
 		mainnet: 'karlsen',
-		testnet: 'kaspatest',
-		devnet: 'kaspadev',
-		simnet: 'kaspasim'
+		testnet: 'karlsentest',
+		devnet: 'karlsendev',
+		simnet: 'karlsensim'
 	}
 
 
-	static KAS(v:number): string {
-		return KAS(v);
+	static KLS(v:number): string {
+		return KLS(v);
 	}
 
 
 	static initRuntime() {
-		return kaspacore.initRuntime();
+		return karlsencore.initRuntime();
 	}
 
 	/**
@@ -101,7 +100,7 @@ class Wallet extends EventTargetImpl {
 		return myWallet;
 	}
 
-	HDWallet: kaspacore.HDPrivateKey;
+	HDWallet: karlsencore.HDPrivateKey;
 	disableBalanceNotifications: boolean = false;
 	get balance(): {available: number, pending:number, total:number} {
 		return {
@@ -127,7 +126,7 @@ class Wallet extends EventTargetImpl {
 	 */
 	network: Network = 'karlsen';
 
-	api: KaspaAPI; //new KaspaAPI();
+	api: KarlsenAPI; //new KarlsenAPI();
 
 	/** 
 	 * Default fee
@@ -203,8 +202,8 @@ class Wallet extends EventTargetImpl {
 	 */
 	constructor(privKey: string, seedPhrase: string, networkOptions: NetworkOptions, options: WalletOptions = {}) {
 		super();
-		this.logger = CreateLogger('KaspaWallet');
-		this.api = new KaspaAPI();
+		this.logger = CreateLogger('KarlsenWallet');
+		this.api = new KarlsenAPI();
 		//@ts-ignore
 		//postMessage({error:new ApiError("test") })
 		let defaultOpt = {
@@ -229,12 +228,12 @@ class Wallet extends EventTargetImpl {
 
 
 		if (privKey && seedPhrase) {
-			this.HDWallet = new kaspacore.HDPrivateKey(privKey);
+			this.HDWallet = new karlsencore.HDPrivateKey(privKey);
 			this.mnemonic = seedPhrase;
 		} else {
 			const temp = new Mnemonic(Mnemonic.Words.ENGLISH);
 			this.mnemonic = temp.toString();
-			this.HDWallet = new kaspacore.HDPrivateKey(temp.toHDPrivateKey().toString());
+			this.HDWallet = new karlsencore.HDPrivateKey(temp.toHDPrivateKey().toString());
 		}
 
 		this.uid = this.createUID();
@@ -763,8 +762,8 @@ class Wallet extends EventTargetImpl {
 	/**
 	 * Compose a serialized, signed transaction
 	 * @param obj
-	 * @param obj.toAddr To address in cashaddr format (e.g. kaspatest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
-	 * @param obj.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KAS)
+	 * @param obj.toAddr To address in cashaddr format (e.g. karlsentest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
+	 * @param obj.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KLS)
 	 * @param obj.fee Fee for miners in sompis
 	 * @param obj.changeAddrOverride Use this to override automatic change address derivation
 	 * @throws if amount is above `Number.MAX_SAFE_INTEGER`
@@ -804,14 +803,14 @@ class Wallet extends EventTargetImpl {
 
 		const changeAddr = changeAddrOverride || this.addressManager.changeAddress.next();
 		try {
-			const tx: kaspacore.Transaction = new kaspacore.Transaction()
+			const tx: karlsencore.Transaction = new karlsencore.Transaction()
 				.from(utxos)
 				.to(toAddr, amount)
 				.setVersion(0)
 				.fee(fee)
 				.change(changeAddr)
 			if(!skipSign)
-				tx.sign(privKeys, kaspacore.crypto.Signature.SIGHASH_ALL, 'schnorr');
+				tx.sign(privKeys, karlsencore.crypto.Signature.SIGHASH_ALL, 'schnorr');
 
 			//window.txxxx = tx;
 			return {
@@ -852,7 +851,7 @@ class Wallet extends EventTargetImpl {
 
 	/*
 	validateAddress(addr:string):boolean{
-		let address = new kaspacore.Address(addr);
+		let address = new karlsencore.Address(addr);
 		return address.type == "pubkey";
 	}
 	*/
@@ -860,8 +859,8 @@ class Wallet extends EventTargetImpl {
 	/**
 	 * Estimate transaction fee. Returns transaction data.
 	 * @param txParams
-	 * @param txParams.toAddr To address in cashaddr format (e.g. kaspatest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
-	 * @param txParams.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KAS)
+	 * @param txParams.toAddr To address in cashaddr format (e.g. karlsentest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
+	 * @param txParams.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KLS)
 	 * @param txParams.fee Fee for miners in sompis
 	 * @throws `FetchError` if endpoint is down. API error message if tx error. Error if amount is too large to be represented as a javascript number.
 	 */
@@ -878,7 +877,7 @@ class Wallet extends EventTargetImpl {
 		if(!txParamsArg.fee)
 			txParamsArg.fee = 0;
 		this.logger.info(`tx ... sending to ${txParamsArg.toAddr}`)
-		this.logger.info(`tx ... amount: ${KAS(txParamsArg.amount)} user fee: ${KAS(txParamsArg.fee)} max data fee: ${KAS(txParamsArg.networkFeeMax||0)}`)
+		this.logger.info(`tx ... amount: ${KLS(txParamsArg.amount)} user fee: ${KLS(txParamsArg.fee)} max data fee: ${KLS(txParamsArg.networkFeeMax||0)}`)
 
 		//if(!this.validateAddress(txParamsArg.toAddr)){
 		//	throw new Error("Invalid address")
@@ -912,11 +911,11 @@ class Wallet extends EventTargetImpl {
 		let amountRequested = txParamsArg.amount+priorityFee;
 
 		let amountAvailable = data.utxos.map(utxo=>utxo.satoshis).reduce((a,b)=>a+b,0);
-		this.logger.verbose(`tx ... need data fee: ${KAS(dataFee)} total needed: ${KAS(amountRequested+dataFee)}`)
-		this.logger.verbose(`tx ... available: ${KAS(amountAvailable)} in ${data.utxos.length} UTXOs`)
+		this.logger.verbose(`tx ... need data fee: ${KLS(dataFee)} total needed: ${KLS(amountRequested+dataFee)}`)
+		this.logger.verbose(`tx ... available: ${KLS(amountAvailable)} in ${data.utxos.length} UTXOs`)
 
 		if(networkFeeMax && dataFee > networkFeeMax) {
-			throw new Error(`Fee max is ${networkFeeMax} but the minimum fee required for this transaction is ${KAS(dataFee)} KLS`);
+			throw new Error(`Fee max is ${networkFeeMax} but the minimum fee required for this transaction is ${KLS(dataFee)} KLS`);
 		}
 
 		if(calculateNetworkFee){
@@ -927,7 +926,7 @@ class Wallet extends EventTargetImpl {
 					txParams.amount = txAmount-txParams.fee;
 				}
 				this.logger.verbose(`tx ... insufficient data fee for transaction size of ${txSize} bytes`);
-				this.logger.verbose(`tx ... need data fee: ${KAS(dataFee)} for ${data.utxos.length} UTXOs`);
+				this.logger.verbose(`tx ... need data fee: ${KLS(dataFee)} for ${data.utxos.length} UTXOs`);
 				this.logger.verbose(`tx ... rebuilding transaction with additional inputs`);
 				let utxoLen = data.utxos.length;
 				this.logger.debug(`final fee ${txParams.fee}`);
@@ -940,10 +939,10 @@ class Wallet extends EventTargetImpl {
 			} while((!networkFeeMax || txParams.fee <= networkFeeMax) && txParams.fee < dataFee+priorityFee);
 
 			if(networkFeeMax && txParams.fee > networkFeeMax)
-				throw new Error(`Maximum network fee exceeded; need: ${KAS(dataFee)} KLS maximum is: ${KAS(networkFeeMax)} KLS`);
+				throw new Error(`Maximum network fee exceeded; need: ${KLS(dataFee)} KLS maximum is: ${KLS(networkFeeMax)} KLS`);
 
 		}else if(dataFee > priorityFee){
-			throw new Error(`Minimum fee required for this transaction is ${KAS(dataFee)} KLS`);
+			throw new Error(`Minimum fee required for this transaction is ${KLS(dataFee)} KLS`);
 		}else if(inclusiveFee){
 			txParams.amount -= txParams.fee;
 			data = this.composeTx(txParams);
@@ -960,8 +959,8 @@ class Wallet extends EventTargetImpl {
 	/**
 	 * Build a transaction. Returns transaction info.
 	 * @param txParams
-	 * @param txParams.toAddr To address in cashaddr format (e.g. kaspatest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
-	 * @param txParams.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KAS)
+	 * @param txParams.toAddr To address in cashaddr format (e.g. karlsentest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
+	 * @param txParams.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KLS)
 	 * @param txParams.fee Fee for miners in sompis
 	 * @throws `FetchError` if endpoint is down. API error message if tx error. Error if amount is too large to be represented as a javascript number.
 	 */
@@ -976,7 +975,7 @@ class Wallet extends EventTargetImpl {
 		} = data;
 
 		const ts_0 = Date.now();
-		tx.sign(privKeys, kaspacore.crypto.Signature.SIGHASH_ALL, 'schnorr');
+		tx.sign(privKeys, karlsencore.crypto.Signature.SIGHASH_ALL, 'schnorr');
 		const {mass:txMass} = tx.getMassAndSize();
 		this.logger.info("txMass", txMass)
 		if(txMass > Wallet.MaxMassAcceptedByBlock){
@@ -988,9 +987,9 @@ class Wallet extends EventTargetImpl {
 		const ts_2 = Date.now();
 
 
-		this.logger.info(`tx ... required data fee: ${KAS(dataFee)} (${utxos.length} UTXOs)`);// (${KAS(txParamsArg.fee)}+${KAS(dataFee)})`);
-		//this.logger.verbose(`tx ... final fee: ${KAS(dataFee+txParamsArg.fee)} (${KAS(txParamsArg.fee)}+${KAS(dataFee)})`);
-		this.logger.info(`tx ... resulting total: ${KAS(totalAmount)}`);
+		this.logger.info(`tx ... required data fee: ${KLS(dataFee)} (${utxos.length} UTXOs)`);// (${KLS(txParamsArg.fee)}+${KLS(dataFee)})`);
+		//this.logger.verbose(`tx ... final fee: ${KLS(dataFee+txParamsArg.fee)} (${KLS(txParamsArg.fee)}+${KLS(dataFee)})`);
+		this.logger.info(`tx ... resulting total: ${KLS(totalAmount)}`);
 
 
 		//console.log(utxos);
@@ -1008,7 +1007,7 @@ class Wallet extends EventTargetImpl {
 			this.logger.debug("composeTx:tx", "txSize:", txSize)
 
 		const ts_3 = Date.now();
-		const inputs: RPC.TransactionInput[] = tx.inputs.map((input: kaspacore.Transaction.Input) => {
+		const inputs: RPC.TransactionInput[] = tx.inputs.map((input: karlsencore.Transaction.Input) => {
 			if (debug || this.loggerLevel > 0) {
 				this.logger.debug("input.script.inspect", input.script.inspect())
 			}
@@ -1024,7 +1023,7 @@ class Wallet extends EventTargetImpl {
 			};
 		})
 		const ts_4 = Date.now();
-		const outputs: RPC.TransactionOutput[] = tx.outputs.map((output: kaspacore.Transaction.Output) => {
+		const outputs: RPC.TransactionOutput[] = tx.outputs.map((output: karlsencore.Transaction.Output) => {
 			return {
 				amount: output.satoshis,
 				scriptPublicKey: {
@@ -1039,7 +1038,7 @@ class Wallet extends EventTargetImpl {
 		//const payload = Buffer.from(payloadStr).toString("base64");
 		//console.log("payload-hex:", Buffer.from(payloadStr).toString("hex"))
 		//@ ts-ignore
-		//const payloadHash = kaspacore.crypto.Hash.sha256sha256(Buffer.from(payloadStr));
+		//const payloadHash = karlsencore.crypto.Hash.sha256sha256(Buffer.from(payloadStr));
 		const rpcTX: RPC.SubmitTransactionRequest = {
 			transaction: {
 				version,
@@ -1094,8 +1093,8 @@ class Wallet extends EventTargetImpl {
 	/**
 	 * Send a transaction. Returns transaction id.
 	 * @param txParams
-	 * @param txParams.toAddr To address in cashaddr format (e.g. kaspatest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
-	 * @param txParams.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KAS)
+	 * @param txParams.toAddr To address in cashaddr format (e.g. karlsentest:qq0d6h0prjm5mpdld5pncst3adu0yam6xch4tr69k2)
+	 * @param txParams.amount Amount to send in sompis (100000000 (1e8) sompis in 1 KLS)
 	 * @param txParams.fee Fee for miners in sompis
 	 * @throws `FetchError` if endpoint is down. API error message if tx error. Error if amount is too large to be represented as a javascript number.
 	 */
@@ -1330,7 +1329,7 @@ class Wallet extends EventTargetImpl {
 	setLogLevel(level: string) {
 		this.logger.setLevel(level);
 		this.loggerLevel = level!='none'?2:0;
-		kaspacore.setDebugLevel(level?1:0);
+		karlsencore.setDebugLevel(level?1:0);
 	}
 }
 

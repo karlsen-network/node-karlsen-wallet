@@ -24,7 +24,7 @@ export class CacheStore{
         console.log("CacheStore:wallet:uid", uid)
 		let sNetwork:string = internalNames[network]||network;
 		if(typeof indexedDB != "undefined")
-			this.idb = new iDB({storeName:"cache", dbName:"kaspa_"+uid+"_"+sNetwork});
+			this.idb = new iDB({storeName:"cache", dbName:"karlsen_"+uid+"_"+sNetwork});
     }
 
     setAddressIndexes(data:CacheItemAddressIndexes){

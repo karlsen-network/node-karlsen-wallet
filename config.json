@@ -1,8 +1,8 @@
 {
   "DEFAULT_FEE": 1000,
   "DEFAULT_NETWORK": {
-    "prefix": "kaspadev",
+    "prefix": "karlsendev",
     "description": "Devnet",
-    "apiBaseUrl": "https://testnet-068rc1-beta-kasparovd.kas.pa"
+    "apiBaseUrl": "https://devnet-api.karlsencoin.com"
   }
 }

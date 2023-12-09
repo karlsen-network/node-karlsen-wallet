@@ -1,9 +1,16 @@
 {
-  "name": "@kaspa/wallet",
+  "name": "@karlsen/wallet",
   "version": "1.4.26",
-  "description": "Node module for kaspa",
+  "description": "Node module for karlsen",
   "main": "dist/index.js",
-  "author": "ASPECTRON Inc.",
+  "authors": [
+    {
+      "name": "ASPECTRON Inc."
+    },
+    {
+      "name": "Karlsen Developers"
+    }
+  ],
   "license": "ISC",
   "scripts": {
     "watch": "tsc --watch",
@@ -11,7 +18,7 @@
   },
   "dependencies": {
     "@aspectron/flow-logger": ">=1.0.3",
-    "@kaspa/core-lib": "file:../node-karlsen-core-lib",
+    "@karlsen/core-lib": "file:../node-karlsen-core-lib",
     "@types/node": "^14.14.9",
     "bitcore-mnemonic": "^8.24.2",
     "browser-passworder": "^2.0.3",
