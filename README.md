@@ -34,7 +34,7 @@ Applications built on top of Karlsen Wallet Framework:
 
 * [karlsen-faucet](https://github.com/karlsen-network/node-karlsen-faucet) - Karlsen faucet website
 * [karlsen-wallet-cli](https://github.com/karlsen-network/node-karlsen-wallet-cli) - command-line wallet
-* [KDX](https://github.com/karlsen-network/node-kdx) - Karlsen desktop wallet
+* [KDX](https://github.com/karlsen-network/karlsen-kdx) - Karlsen desktop wallet
 
 **PLEASE NOTE:** all Karlsen applications and libraries are under heavy
 development.
