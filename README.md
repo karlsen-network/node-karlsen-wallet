@@ -7,6 +7,20 @@ Karlsen Wallet is implemented in TypeScript and can be used server-side
 
 **PLEASE NOTE: This project is under heavy development**
 
+## Installing karlsen-wallet
+
+```
+npm install -g @karlsen/wallet
+```
+
+## Cloning karlsen-wallet
+
+```
+git clone https://github.com/karlsen-network/node-karlsen-wallet
+cd node-karlsen-wallet
+npm install
+```
+
 ## Components
 
 Karlsen Wallet uses the following modules:
