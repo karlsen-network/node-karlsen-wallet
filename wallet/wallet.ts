@@ -140,7 +140,7 @@ class Wallet extends EventTargetImpl {
 	/**
 	 * Current API endpoint for selected network
 	 */
-	apiEndpoint = 'localhost:16210';
+	apiEndpoint = 'localhost:42210';
 
 	/**
 	 * A 12 word mnemonic.
